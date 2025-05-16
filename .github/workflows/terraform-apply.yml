@@ -46,13 +46,6 @@ jobs:
     - name: Terraform Validate
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} validate -no-color
 
-    - name: Terraform Destroy (clean old VMs)
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} destroy -auto-approve -input=false
-      env:
-        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
-        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
-        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
-
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false
