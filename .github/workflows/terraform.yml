@@ -34,13 +34,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Terraform Destroy (Clean VMs)
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} destroy -auto-approve -input=false
-      env:
-        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
-        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
-        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
-        
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
@@ -56,6 +49,13 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false
+      env:
+        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
+        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
+
+    - name: Terraform Destroy (Clean VMs)
+      run: terraform -chdir=${{ env.TF_WORKING_DIR }} destroy -auto-approve -input=false
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
