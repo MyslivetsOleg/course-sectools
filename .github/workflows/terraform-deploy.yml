@@ -37,7 +37,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Create working directory
-      run: mkdir -p /home/srvadmin/sectools-terraform-workdir
+      run: mkdir -p /home/srvadmin/sectools-terraform-workdir/state
 
     - name: Download previous tfstate artifact (if exists)
       uses: actions/download-artifact@v4
