@@ -16,7 +16,8 @@ concurrency:
 
 env:
   TF_VERSION: "1.4.1"
-  TF_WORKING_DIR: /home/srvadmin/sectools-terraform-workdir
+  TF_WORKING_DIR: sectools-terraform
+  TF_STATE_DIR: /home/srvadmin/sectools-terraform-workdir
 
 jobs:
   terraform:
@@ -51,7 +52,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false
+      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false -state=${{ env.TF_STATE_DIR }}/terraform.tfstate -out=plan.out
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
@@ -61,7 +62,7 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -lock=false -input=false
+      run: terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -lock=false -input=false -state=${{ env.TF_STATE_DIR }}/terraform.tfstate -out=plan.out
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
