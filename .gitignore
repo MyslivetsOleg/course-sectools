@@ -1,1 +1,2 @@
 sectools-terraform/.terraform/
+sectools-terraform/terraform.tfstate*
