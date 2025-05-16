@@ -16,6 +16,6 @@ terraform {
 
 provider "opennebula" {
   endpoint = "http://oncloud.grsu.by:2633/RPC2"
-  username = env("ONE_USERNAME")
-  password = env("ONE_PASSWORD")
+  username = var.opennebula_username
+  password = var.opennebula_password
 }
