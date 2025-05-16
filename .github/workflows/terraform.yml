@@ -2,6 +2,11 @@ name: 'Terraform'
 
 on:
   workflow_dispatch:
+    inputs:
+      vm_count:
+        description: "Number of VMs to deploy"
+        required: true
+        default: "1"
 
 permissions:
   contents: read
@@ -35,6 +40,7 @@ jobs:
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Validate
@@ -46,6 +52,7 @@ jobs:
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
@@ -55,3 +62,4 @@ jobs:
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
