@@ -76,6 +76,10 @@ jobs:
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
         TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
+    - name: Debug state file location
+      run: |
+        ls -lah sectools-terraform-workdir/state
+
     - name: Upload terraform.tfstate
       uses: actions/upload-artifact@v4
       with:
