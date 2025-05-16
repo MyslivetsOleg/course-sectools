@@ -19,6 +19,6 @@
 - name: Fetch results back
   ansible.builtin.fetch:
     src: "{{ ansible_env.HOME }}/check_credit_output.txt"
-    dest: /tmp/check_credit_output.txt
+    dest: "/tmp/{{ ansible_all_ipv4_addresses[0] }}-check_credit_output.txt"
     flat: yes
   
