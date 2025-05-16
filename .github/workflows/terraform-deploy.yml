@@ -44,6 +44,7 @@ jobs:
       with:
         name: terraform-state
         path: ${{ env.TF_STATE_FILE }}
+      continue-on-error: true  
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
