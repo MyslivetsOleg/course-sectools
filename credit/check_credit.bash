@@ -1,5 +1,4 @@
-#! /bin/env bash
-
+#!/bin/bash
 total_score=0
 task2_userdir="/opt/backups"
 task_user="backup-operator"

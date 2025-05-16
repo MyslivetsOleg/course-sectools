@@ -1,0 +1,24 @@
+---
+# tasks file for roles/check-results
+
+- name: Run check script
+  ansible.builtin.copy:
+    src: ../credit/check_credit.bash
+    dest: "{{ ansible_env.HOME }}/check_credit.bash"
+    mode: '0755'
+  tags:
+  - checks
+
+- name: Execute script and write output
+  ansible.builtin.shell: "{{ ansible_env.HOME }}/check_credit.bash 2>&1 | tee {{ ansible_env.HOME }}/check_credit_output.txt"
+  args:
+    executable: /bin/bash
+  tags:
+  - checks
+
+- name: Fetch results back
+  ansible.builtin.fetch:
+    src: "{{ ansible_env.HOME }}/check_credit_output.txt"
+    dest: /tmp/check_credit_output.txt
+    flat: yes
+  

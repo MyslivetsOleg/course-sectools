@@ -1,0 +1,5 @@
+- name: Check Student's VMs
+  hosts: credit-student-vms
+
+  roles:
+    - check-results
