@@ -60,7 +60,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false -state=${{ env.TF_STATE_DIR }}/terraform.tfstate -out=plan.out
+      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false -state=${{ env.TF_STATE_DIR }}/terraform.tfstate 
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
@@ -70,7 +70,7 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply      
       run: |
-        terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -input=false plan.out
+        terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -input=false 
         cp ${{ env.TF_WORKING_DIR }}/terraform.tfstate ${{ env.TF_STATE_FILE }}
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
