@@ -54,13 +54,6 @@ jobs:
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
         TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
-    - name: Terraform Destroy (Clean VMs)
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} destroy -auto-approve -input=false
-      env:
-        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
-        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
-        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
-
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
