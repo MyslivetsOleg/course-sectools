@@ -39,6 +39,12 @@ jobs:
     - name: Create working directory
       run: mkdir -p ${{ env.TF_STATE_DIR }}
 
+    - name: Download Terraform state
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-state
+        path: ${{ env.TF_STATE_DIR }}
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
