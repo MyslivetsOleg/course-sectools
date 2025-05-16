@@ -33,8 +33,8 @@ jobs:
     - name: Terraform Init
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
       env:
-        ONE_USERNAME: ${{ secrets.ONE_USERNAME }}
-        ONE_PASSWORD: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
+        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Validate
@@ -50,5 +50,5 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -input=false
       env:
-        ONE_USERNAME: ${{ secrets.ONE_USERNAME }}
-        ONE_PASSWORD: ${{ secrets.ONE_PASSWORD }}
+        TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
+        TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
