@@ -17,7 +17,8 @@ concurrency:
 env:
   TF_VERSION: "1.4.1"
   TF_WORKING_DIR: sectools-terraform
-  TF_STATE_DIR: /home/srvadmin/sectools-terraform-workdir
+  TF_STATE_DIR: /home/srvadmin/sectools-terraform-workdir/state
+  TF_STATE_FILE: /home/srvadmin/sectools-terraform-workdir/terraform.tfstate
 
 jobs:
   terraform:
@@ -37,6 +38,13 @@ jobs:
 
     - name: Create working directory
       run: mkdir -p /home/srvadmin/sectools-terraform-workdir
+
+    - name: Download previous tfstate artifact (if exists)
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-state
+        path: ${{ env.TF_STATE_DIR }}
+      continue-on-error: true  # no error if first run
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -67,3 +75,9 @@ jobs:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
         TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
+
+    - name: Upload terraform.tfstate
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-state
+        path: ${{ env.TF_STATE_FILE }}
