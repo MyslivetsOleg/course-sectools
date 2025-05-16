@@ -18,7 +18,7 @@ env:
   TF_VERSION: "1.4.1"
   TF_WORKING_DIR: sectools-terraform
   TF_STATE_DIR: /home/srvadmin/sectools-terraform-workdir/state
-  TF_STATE_FILE: /home/srvadmin/sectools-terraform-workdir/terraform.tfstate
+  TF_STATE_FILE: /home/srvadmin/sectools-terraform-workdir/state/terraform.tfstate
 
 jobs:
   terraform:
