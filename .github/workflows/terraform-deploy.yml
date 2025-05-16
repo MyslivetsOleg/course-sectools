@@ -16,7 +16,7 @@ concurrency:
 
 env:
   TF_VERSION: "1.4.1"
-  TF_WORKING_DIR: sectools-terraform-workdir
+  TF_WORKING_DIR: /sectools-terraform-workdir
 
 jobs:
   terraform:
@@ -33,6 +33,9 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Create working directory
+      run: mkdir -p /sectools-terraform-workdir
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
