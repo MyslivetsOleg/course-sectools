@@ -62,21 +62,13 @@ jobs:
         MINIO_ACCESS_KEY: ${{ secrets.SECTOOLS_CICD_MINIO_USER }}
         MINIO_SECRET_KEY: ${{ secrets.SECTOOLS_CICD_MINIO_PWD }}
         
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    # - name: Terraform Init
-    #  run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
-    #  env:
-    #    TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
-    #   TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
-    #    TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
-
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Validate
       run: terraform -chdir=${{ env.TF_WORKING_DIR }} validate -no-color
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false -state=${{ env.TF_STATE_DIR }}/terraform.tfstate 
+      run: terraform -chdir=${{ env.TF_WORKING_DIR }} plan -input=false 
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
@@ -87,7 +79,7 @@ jobs:
     - name: Terraform Apply      
       run: |
         terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve -input=false 
-        cp ${{ env.TF_WORKING_DIR }}/terraform.tfstate ${{ env.TF_STATE_FILE }}
+        terraform -chdir=sectools-terraform state pull > sectools-terraform/terraform.tfstate
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
