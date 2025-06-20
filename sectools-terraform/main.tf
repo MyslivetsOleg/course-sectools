@@ -12,6 +12,9 @@ terraform {
       version = ">= 1.4.1"
     }
   }
+  terraform {
+    backend "s3" {}
+  }
 }
 
 provider "opennebula" {
