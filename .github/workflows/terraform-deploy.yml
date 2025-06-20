@@ -46,13 +46,28 @@ jobs:
         path: ${{ env.TF_STATE_FILE }}
       continue-on-error: true  
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
+      run: terraform -chdir=sectools-terraform init -input=false -upgrade \
+        -backend-config="bucket=terraform" \
+        -backend-config="key=tfstate/sectools.tfstate" \        
+        -backend-config="endpoint=${{ secrets.SECTOOLS_CICD_MINIO_FQDN }}":9000" \
+        -backend-config="access_key=${{ secrets.SECTOOLS_CICD_MINIO_USER }}" \
+        -backend-config="secret_key=${{ secrets.SECTOOLS_CICD_MINIO_PWD }}" \
+        -backend-config="skip_credentials_validation=true" \
+        -backend-config="skip_metadata_api_check=true" \
+        -backend-config="force_path_style=true"
       env:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
-        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
+        TF_VAR_vm_count: ${{ github.event.inputs.vm_count }} 
+        
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # - name: Terraform Init
+    #  run: terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade
+    #  env:
+    #    TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
+    #   TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
+    #    TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Validate
