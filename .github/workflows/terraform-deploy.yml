@@ -59,6 +59,8 @@ jobs:
         TF_VAR_opennebula_username: ${{ secrets.ONE_USERNAME }}
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
         TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
+        MINIO_ACCESS_KEY: ${{ secrets.SECTOOLS_CICD_MINIO_USER }}
+        MINIO_SECRET_KEY: ${{ secrets.SECTOOLS_CICD_MINIO_PWD }}
         
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     # - name: Terraform Init
