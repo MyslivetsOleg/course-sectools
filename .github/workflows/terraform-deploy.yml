@@ -40,7 +40,8 @@ jobs:
       run: mkdir -p ${{ env.TF_STATE_DIR }}
 
     - name: Terraform Init
-      run: terraform -chdir=sectools-terraform init -input=false -upgrade \
+      run: |
+        terraform -chdir=${{ env.TF_WORKING_DIR }} init -input=false -upgrade \
         -backend-config="bucket=sectools-cicd-bucket" \
         -backend-config="key=tfstate/sectools.tfstate" \        
         -backend-config="endpoint=${{ secrets.SECTOOLS_CICD_MINIO_FQDN }}:9000" \
