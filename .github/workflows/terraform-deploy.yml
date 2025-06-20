@@ -39,16 +39,9 @@ jobs:
     - name: Create working directory
       run: mkdir -p ${{ env.TF_STATE_DIR }}
 
-    - name: Download Terraform state
-      uses: actions/download-artifact@v4
-      with:
-        name: terraform-state
-        path: ${{ env.TF_STATE_FILE }}
-      continue-on-error: true  
-
     - name: Terraform Init
       run: terraform -chdir=sectools-terraform init -input=false -upgrade \
-        -backend-config="bucket=terraform" \
+        -backend-config="bucket=sectools-cicd-bucket" \
         -backend-config="key=tfstate/sectools.tfstate" \        
         -backend-config="endpoint=${{ secrets.SECTOOLS_CICD_MINIO_FQDN }}":9000" \
         -backend-config="access_key=${{ secrets.SECTOOLS_CICD_MINIO_USER }}" \
@@ -92,12 +85,6 @@ jobs:
         TF_VAR_opennebula_password: ${{ secrets.ONE_PASSWORD }}
         TF_VAR_vm_count: ${{ github.event.inputs.vm_count }}
 
-    - name: Verify tfstate before upload
-      run: |
-        ls -lah ${{ env.TF_STATE_DIR }}
 
-    - name: Upload terraform.tfstate
-      uses: actions/upload-artifact@v4
-      with:
-        name: terraform-state
-        path: ${{ env.TF_STATE_FILE }}
+
+
