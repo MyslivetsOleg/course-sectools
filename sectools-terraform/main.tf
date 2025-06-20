@@ -14,6 +14,10 @@ terraform {
   }
 }
 
+terraform {
+  backend "s3" {}
+}
+
 provider "opennebula" {
   endpoint = "http://oncloud.grsu.by:2633/RPC2"
   username = var.opennebula_username
