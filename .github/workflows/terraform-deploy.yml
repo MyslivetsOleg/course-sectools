@@ -19,6 +19,10 @@ env:
   TF_WORKING_DIR: sectools-terraform
   TF_STATE_DIR: /home/srvadmin/sectools-terraform-workdir/state
   TF_STATE_FILE: /home/srvadmin/sectools-terraform-workdir/state/terraform.tfstate
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.SECTOOLS_CICD_MINIO_USER }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.SECTOOLS_CICD_MINIO_PWD }}
+  AWS_SKIP_REQUESTING_ACCOUNT_ID: true
 
 jobs:
   terraform:
